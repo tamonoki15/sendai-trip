@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>11/17 仙台日帰り旅行 しおり＆ナビ｜田面木の家</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Zen Maru Gothic & Noto Sans JP -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Noto Sans JP"', 'sans-serif'],
+            maru: ['"Zen Maru Gothic"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              teal: '#0d9488',
+              light: '#f0fdfa',
+              warm: '#fffbeb',
+              amber: '#d97706',
+              user: '#0284c7',
+              userBg: '#e0f2fe',
+              staff: '#16a34a',
+              staffBg: '#dcfce7',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* 基本フォント設定と文字サイズ切り替え用クラス */
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background-color: #faf8f5;
+      color: #1e293b;
+      padding-bottom: 92px; /* 下部ナビゲーション用スペース */
+      -webkit-tap-highlight-color: transparent;
+    }
+    .font-maru {
+      font-family: 'Zen Maru Gothic', sans-serif;
+    }
+    /* 大きな文字モード */
+    html.text-large {
+      font-size: 18.5px;
+    }
+    /* スクロールバー非表示（横スクロール領域用） */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    /* カードの優しい影 */
+    .soft-card {
+      box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+    }
+    /* パルスアニメーション */
+    @keyframes gentlePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    .animate-gentle {
+      animation: gentlePulse 2.5s infinite ease-in-out;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-teal-200 selection:text-teal-900">
+
+  <!-- ヘッダー -->
+  <header class="sticky top-0 z-40 bg-gradient-to-r from-teal-700 via-teal-600 to-emerald-600 text-white shadow-md">
+    <div class="max-w-2xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div>
+        <div class="flex items-center gap-1.5 text-teal-100 text-xs font-bold tracking-wider">
+          <span class="bg-white/20 px-2 py-0.5 rounded-full">田面木の家 24名</span>
+          <span>11月17日(火)</span>
+        </div>
+        <h1 class="font-maru text-lg sm:text-xl font-bold tracking-tight mt-0.5 flex items-center gap-2">
+          <i class="fa-solid fa-train-subway text-amber-300"></i>
+          仙台日帰り旅行 しおり＆ナビ
+        </h1>
+      </div>
+
+      <!-- 文字サイズ切替ボタン -->
+      <button id="fontSizeToggle" onclick="toggleFontSize()" aria-label="文字サイズ切り替え"
+        class="flex flex-col items-center justify-center bg-white/15 hover:bg-white/25 active:bg-white/30 border border-white/30 rounded-xl px-3 py-1.5 transition cursor-pointer">
+        <span class="text-xs font-bold leading-none" id="fontSizeLabel">文字：標準</span>
+        <span class="text-[11px] text-teal-100 mt-0.5 font-maru">大きくする</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- メインコンテンツエリア -->
+  <main class="max-w-2xl mx-auto px-4 pt-4 space-y-5">
+
+    <!-- カスタム通知トースト（alert代替） -->
+    <div id="toastMessage" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 hidden bg-slate-800 text-white px-5 py-3 rounded-2xl shadow-xl text-sm font-bold flex items-center gap-2.5 transition-opacity duration-300 max-w-[90vw]">
+      <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+      <span id="toastText">保存しました</span>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- タブ1：行程・タイムライン -->
+    <!-- ========================================== -->
+    <section id="tab-schedule" class="tab-content space-y-4">
+      <!-- 進捗＆現在時刻バナー -->
+      <div class="bg-white rounded-2xl p-4 soft-card border border-teal-100">
+        <div class="flex items-center justify-between mb-2">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping"></span>
+            <span class="text-xs font-bold text-slate-500">現在時刻</span>
+            <span id="liveClock" class="font-maru font-bold text-base text-teal-800">--:--</span>
+          </div>
+          <span id="progressText" class="text-xs font-bold bg-teal-50 text-teal-700 px-2.5 py-1 rounded-full border border-teal-200">
+            完了 0 / 8
+          </span>
+        </div>
+        <!-- プログレスバー -->
+        <div class="w-full bg-slate-100 rounded-full h-3 overflow-hidden">
+          <div id="progressBar" class="bg-gradient-to-r from-teal-500 to-emerald-500 h-3 rounded-full transition-all duration-500" style="width: 0%"></div>
+        </div>
+        <p class="text-xs text-slate-500 mt-2">
+          <i class="fa-regular fa-square-check text-teal-600 mr-1"></i>
+          各ステップをタップすると完了チェックができます（自動保存）
+        </p>
+      </div>
+
+      <!-- タイムラインリスト -->
+      <div id="timelineContainer" class="space-y-3">
+        <!-- JavaScriptで動的に生成 -->
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- タブ2：GPS現在地ナビ -->
+    <!-- ========================================== -->
+    <section id="tab-navi" class="tab-content hidden space-y-4">
+      <!-- GPS取得コントロールカード -->
+      <div class="bg-gradient-to-br from-sky-600 to-teal-700 text-white rounded-2xl p-5 soft-card">
+        <div class="flex items-start justify-between gap-3">
+          <div>
+            <h2 class="font-maru text-lg font-bold flex items-center gap-2">
+              <i class="fa-solid fa-location-crosshairs text-amber-300"></i>
+              現在地から目的地ナビ
+            </h2>
+            <p class="text-xs text-sky-100 mt-1 leading-relaxed">
+              スマホの位置情報を使って、今の場所から各スポットまでの直線距離・方角・ルートを表示します。
+            </p>
+          </div>
+        </div>
+
+        <button id="getLocationBtn" onclick="fetchCurrentLocation()"
+          class="mt-4 w-full bg-amber-400 hover:bg-amber-300 active:bg-amber-500 text-slate-900 font-maru font-bold py-3.5 px-4 rounded-xl shadow-md flex items-center justify-center gap-2 transition cursor-pointer">
+          <i class="fa-solid fa-satellite-dish text-lg"></i>
+          <span>現在地を取得・更新する</span>
+        </button>
+
+        <!-- GPSステータス表示枠 -->
+        <div id="gpsStatusBox" class="mt-3 bg-white/15 backdrop-blur-sm rounded-xl p-3 text-xs border border-white/20">
+          <div class="flex items-center gap-2 text-sky-100">
+            <i class="fa-solid fa-circle-info"></i>
+            <span id="gpsStatusText">ボタンを押すと現在地からの距離を計算します。</span>
+          </div>
+          <div id="gpsCoordsText" class="mt-1 font-mono text-[11px] text-white/80 hidden"></div>
+        </div>
+      </div>
+
+      <!-- 主要スポット一覧 -->
+      <div class="space-y-3" id="spotsContainer">
+        <!-- JavaScriptで動的に生成 -->
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- タブ3：新幹線 座席表 -->
+    <!-- ========================================== -->
+    <section id="tab-seats" class="tab-content hidden space-y-4">
+      <!-- 列車切り替え＆凡例カード -->
+      <div class="bg-white rounded-2xl p-4 soft-card border border-slate-100 space-y-3">
+        <div class="flex items-center justify-between">
+          <h2 class="font-maru text-lg font-bold text-slate-800 flex items-center gap-2">
+            <i class="fa-solid fa-chair text-teal-600"></i>
+            新幹線 ざせき案内ひょう
+          </h2>
+          <span class="text-xs font-bold bg-slate-100 text-slate-700 px-2.5 py-1 rounded-full">乗車 24名</span>
+        </div>
+
+        <!-- 行き・帰り切替ボタン -->
+        <div class="grid grid-cols-2 gap-2 bg-slate-100 p-1.5 rounded-xl">
+          <button id="btnTrainOut" onclick="switchTrain('outbound')"
+            class="py-2.5 px-3 rounded-lg font-maru font-bold text-sm transition bg-teal-600 text-white shadow-sm cursor-pointer">
+            <div>【ゆき】はやぶさ10号</div>
+            <div class="text-[11px] font-normal opacity-90">5号車 (8:11発→9:29着)</div>
+          </button>
+          <button id="btnTrainIn" onclick="switchTrain('inbound')"
+            class="py-2.5 px-3 rounded-lg font-maru font-bold text-sm transition text-slate-600 hover:bg-white/60 cursor-pointer">
+            <div>【かえり】はやぶさ29号</div>
+            <div class="text-[11px] font-normal opacity-90">8号車 (16:19発→17:34着)</div>
+          </button>
+        </div>
+
+        <!-- 名前検索ボックス -->
+        <div class="relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+          <input type="text" id="seatSearchInput" oninput="renderSeatMap()"
+            placeholder="お名前でさがす（例：森内、まりな…）"
+            class="w-full pl-10 pr-9 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500 focus:bg-white">
+          <button id="clearSearchBtn" onclick="clearSeatSearch()" class="hidden absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1">
+            <i class="fa-solid fa-circle-xmark"></i>
+          </button>
+        </div>
+
+        <!-- 色分け凡例 -->
+        <div class="flex flex-wrap items-center gap-3 text-xs pt-1 border-t border-slate-100">
+          <div class="flex items-center gap-1.5">
+            <span class="w-4 h-4 rounded bg-sky-100 border-2 border-sky-500 inline-block"></span>
+            <span class="font-bold text-sky-900">利用者のみなさん（青色）</span>
+          </div>
+          <div class="flex items-center gap-1.5">
+            <span class="w-4 h-4 rounded bg-emerald-100 border-2 border-emerald-600 inline-block"></span>
+            <span class="font-bold text-emerald-900">引率職員（緑色）</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 座席マップ本体 -->
+      <div id="seatMapContainer" class="bg-white rounded-2xl p-4 soft-card border border-slate-200">
+        <!-- JavaScriptで動的に生成 -->
+      </div>
+
+      <!-- 車内のおやくそく -->
+      <div class="bg-amber-50 border border-amber-200 rounded-2xl p-4 flex items-start gap-3">
+        <div class="bg-amber-400 text-slate-900 w-9 h-9 rounded-full flex items-center justify-center shrink-0 mt-0.5">
+          <i class="fa-solid fa-bullhorn"></i>
+        </div>
+        <div class="text-sm text-amber-950">
+          <p class="font-maru font-bold text-base">車内でのおやくそく</p>
+          <p class="mt-1 leading-relaxed">
+            席を離れたり、トイレに行くときは、<strong>必ず近くの職員に声をかけてね！</strong>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================== -->
+    <!-- タブ4：楽しみ方＆メモ -->
+    <!-- ========================================== -->
+    <section id="tab-guide" class="tab-content hidden space-y-4">
+      <!-- 見る・食べる・感じる ガイド -->
+      <div class="space-y-3">
+        <h2 class="font-maru text-lg font-bold text-slate-800 px-1 flex items-center gap-2">
+          <i class="fa-solid fa-sparkles text-amber-500"></i>
+          仙台旅行 3つの楽しみポイント
+        </h2>
+
+        <!-- 見る -->
+        <div class="bg-white rounded-2xl p-4 soft-card border-l-8 border-sky-500">
+          <div class="flex items-center gap-2 text-sky-700 font-maru font-bold text-base">
+            <span class="bg-sky-100 p-2 rounded-xl"><i class="fa-solid fa-eye"></i></span>
+            <span>【見る】いのちきらめく大水槽＆海の仲間たち</span>
+          </div>
+          <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+            仙台うみの杜水族館のシンボル、幅14m・水深7.5mの巨大水槽「いのちきらめく うみ」では、約3万尾のマイワシの群れやサメ、エイが悠々と泳ぐ迫力満点の姿が見られます！
+          </p>
+        </div>
+
+        <!-- 感じる -->
+        <div class="bg-white rounded-2xl p-4 soft-card border-l-8 border-teal-500">
+          <div class="flex items-center gap-2 text-teal-700 font-maru font-bold text-base">
+            <span class="bg-teal-100 p-2 rounded-xl"><i class="fa-solid fa-heart"></i></span>
+            <span>【感じる】イルカ・アシカ・バードのライブショー！</span>
+          </div>
+          <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+            「うみの杜スタジアム」では、イルカのダイナミックなジャンプやアシカのユーモラスな演技、頭上を飛び交うバードパフォーマンスで水しぶきと感動を体感できます。ペンギンやアザラシも間近で観察！
+          </p>
+        </div>
+
+        <!-- 食べる -->
+        <div class="bg-white rounded-2xl p-4 soft-card border-l-8 border-amber-500">
+          <div class="flex items-center gap-2 text-amber-700 font-maru font-bold text-base">
+            <span class="bg-amber-100 p-2 rounded-xl"><i class="fa-solid fa-utensils"></i></span>
+            <span>【食べる】本場の仙台グルメ＆ずんだスイーツ</span>
+          </div>
+          <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+            ランチは水族館フードコート「wakuwaku ocean」や隣接する「三井アウトレットパーク仙台港」で！名物の<strong>牛たん焼、三陸海鮮丼、はらこ飯</strong>や、デザートに<strong>ずんだシェイク</strong>がおすすめです。
+          </p>
+        </div>
+      </div>
+
+      <!-- 集合場所・緊急連絡メモ（localStorage保存） -->
+      <div class="bg-white rounded-2xl p-4 soft-card border border-teal-200 space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="font-maru text-base font-bold text-teal-900 flex items-center gap-2">
+            <i class="fa-solid fa-pen-to-square text-teal-600"></i>
+            集合場所・緊急連絡メモ
+          </h3>
+          <span class="text-[11px] text-slate-400">スマホに自動保存</span>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">集合時間・場所のメモ</label>
+          <textarea id="memoMeeting" rows="2" oninput="saveMemos()"
+            placeholder="例：12:40 水族館1階入り口の時計前に集合 / 15:45 仙台駅ステンドグラス前"
+            class="w-full p-3 bg-amber-50/60 border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"></textarea>
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold text-slate-600 mb-1">引率リーダー連絡先・班分けメモ</label>
+          <textarea id="memoEmergency" rows="3" oninput="saveMemos()"
+            placeholder="例：緊急連絡先 090-XXXX-XXXX / 1班：森内・渡辺・もりお・みつき…"
+            class="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"></textarea>
+        </div>
+
+        <div class="flex justify-end">
+          <button onclick="saveMemos(true)"
+            class="bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs px-4 py-2 rounded-xl shadow-sm flex items-center gap-1.5 cursor-pointer">
+            <i class="fa-solid fa-floppy-disk"></i>
+            <span>メモを保存する</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 下部固定ナビゲーションバー（片手操作しやすい大きなタップ領域） -->
+  <nav class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
+    <div class="max-w-2xl mx-auto grid grid-cols-4 gap-1 px-2 py-1.5">
+      <button onclick="switchTab('schedule')" id="nav-schedule"
+        class="nav-btn flex flex-col items-center justify-center py-2 rounded-xl text-teal-700 bg-teal-50 font-bold transition cursor-pointer">
+        <i class="fa-solid fa-clock text-lg mb-0.5"></i>
+        <span class="text-xs font-maru">行程表</span>
+      </button>
+
+      <button onclick="switchTab('navi')" id="nav-navi"
+        class="nav-btn flex flex-col items-center justify-center py-2 rounded-xl text-slate-500 hover:bg-slate-50 font-medium transition cursor-pointer">
+        <i class="fa-solid fa-location-dot text-lg mb-0.5"></i>
+        <span class="text-xs font-maru">現在地ナビ</span>
+      </button>
+
+      <button onclick="switchTab('seats')" id="nav-seats"
+        class="nav-btn flex flex-col items-center justify-center py-2 rounded-xl text-slate-500 hover:bg-slate-50 font-medium transition cursor-pointer">
+        <i class="fa-solid fa-train text-lg mb-0.5"></i>
+        <span class="text-xs font-maru">座席表</span>
+      </button>
+
+      <button onclick="switchTab('guide')" id="nav-guide"
+        class="nav-btn flex flex-col items-center justify-center py-2 rounded-xl text-slate-500 hover:bg-slate-50 font-medium transition cursor-pointer">
+        <i class="fa-solid fa-compass text-lg mb-0.5"></i>
+        <span class="text-xs font-maru">ガイド・メモ</span>
+      </button>
+    </div>
+  </nav>
+
+  <script>
+    // ==========================================
+    // 1. データ定義
+    // ==========================================
+
+    // タイムラインデータ
+    const scheduleData = [
+      {
+        id: 'step-1',
+        time: '08:11 → 09:29',
+        title: '東北新幹線 はやぶさ10号（5号車）',
+        badge: '移動',
+        badgeColor: 'bg-sky-100 text-sky-800',
+        icon: 'fa-train-subway',
+        desc: '八戸駅 8:11発 → 仙台駅 9:29着。座席表で自分の席を確認しましょう。トイレの際は職員に声をかけてね。',
+        actionTab: 'seats',
+        actionLabel: '5号車 座席表を見る'
+      },
+      {
+        id: 'step-2',
+        time: '09:45頃 → 10:30頃',
+        title: 'JR仙石線＆徒歩・バスで水族館へ',
+        badge: '移動',
+        badgeColor: 'bg-sky-100 text-sky-800',
+        icon: 'fa-train',
+        desc: '仙台駅（地下ホーム・JR仙石線）から中野栄駅へ約18分。駅から水族館までは徒歩約15分（またはシャトルバス）です。',
+        actionTab: 'navi',
+        actionLabel: '駅・水族館の位置を確認'
+      },
+      {
+        id: 'step-3',
+        time: '10:30 〜 12:45',
+        title: '仙台うみの杜水族館【見る・感じる】',
+        badge: 'メイン観光',
+        badgeColor: 'bg-teal-100 text-teal-800',
+        icon: 'fa-fish-fins',
+        desc: '大水槽「いのちきらめく うみ」や、迫力のイルカ・アシカ・バードパフォーマンス、ペンギン・アザラシの観察を楽しみましょう！',
+        actionTab: 'guide',
+        actionLabel: '見どころポイントを見る'
+      },
+      {
+        id: 'step-4',
+        time: '12:45 〜 14:00',
+        title: 'ランチタイム【食べる】',
+        badge: '食事',
+        badgeColor: 'bg-amber-100 text-amber-800',
+        icon: 'fa-utensils',
+        desc: '水族館内フードコート「wakuwaku ocean」または隣接の「三井アウトレットパーク仙台港」で牛たん・海鮮丼・ずんだシェイクなど仙台グルメを満喫！',
+        actionTab: 'navi',
+        actionLabel: 'アウトレットへの距離を見る'
+      },
+      {
+        id: 'step-5',
+        time: '14:00 → 14:50頃',
+        title: '中野栄駅 → 仙台駅へ移動',
+        badge: '移動',
+        badgeColor: 'bg-sky-100 text-sky-800',
+        icon: 'fa-person-walking-luggage',
+        desc: '人数点呼をして中野栄駅へ移動。JR仙石線あおば通行きに乗車し、仙台駅へ戻ります。',
+        actionTab: 'navi',
+        actionLabel: '仙台駅までのルート確認'
+      },
+      {
+        id: 'step-6',
+        time: '14:50 〜 15:50',
+        title: 'S-PAL仙台・おみやげ処でお買い物＆休憩',
+        badge: 'お土産',
+        badgeColor: 'bg-pink-100 text-pink-800',
+        icon: 'fa-gift',
+        desc: '萩の月、ずんだ餅、笹かまぼこ、牛たんなど仙台土産を購入！15:50頃には新幹線改札前に集合しましょう。',
+        actionTab: 'navi',
+        actionLabel: 'S-PAL仙台の位置を確認'
+      },
+      {
+        id: 'step-7',
+        time: '16:19 → 17:34',
+        title: '東北新幹線 はやぶさ29号（8号車）',
+        badge: '帰り',
+        badgeColor: 'bg-emerald-100 text-emerald-800',
+        icon: 'fa-house-chimney',
+        desc: '仙台駅 16:19発 → 八戸駅 17:34着。帰りは【8号車】です（行きと号車が変わるので注意！）。おつかれさまでした！',
+        actionTab: 'seats',
+        actionLabel: '8号車 座席表を見る'
+      }
+    ];
+
+    // 主要スポット位置情報データ
+    const spotsData = [
+      {
+        id: 'sendai-station',
+        name: 'JR仙台駅（新幹線・仙石線）',
+        category: '発着駅・集合拠点',
+        lat: 38.260132,
+        lng: 140.882437,
+        note: '新幹線ホームは3階、JR仙石線（中野栄方面）は地下ホーム（1・2番線）です。',
+        mapQuery: '仙台駅'
+      },
+      {
+        id: 'nakanosakae-station',
+        name: 'JR中野栄駅（仙石線）',
+        category: '水族館最寄り駅',
+        lat: 38.273866,
+        lng: 140.985952,
+        note: '仙台駅から仙石線で約18分。改札を出て右方向へ進むと水族館方面です（徒歩約15分）。',
+        mapQuery: '中野栄駅'
+      },
+      {
+        id: 'uminomori-aquarium',
+        name: '仙台うみの杜水族館',
+        category: '見る・感じる・ランチ',
+        lat: 38.270759,
+        lng: 140.996725,
+        note: '10:30〜14:00滞在エリア。1階フードコート「wakuwaku ocean」あり。',
+        mapQuery: '仙台うみの杜水族館'
+      },
+      {
+        id: 'mitsui-outlet',
+        name: '三井アウトレットパーク 仙台港',
+        category: '食べる（フードコート）',
+        lat: 38.274285,
+        lng: 140.993645,
+        note: '水族館から徒歩約7分。2階「杜のキッチン」に牛たん・海鮮など仙台グルメが充実！',
+        mapQuery: '三井アウトレットパーク 仙台港'
+      },
+      {
+        id: 'spal-sendai',
+        name: 'S-PAL仙台・おみやげ処せんだい',
+        category: 'お土産・休憩',
+        lat: 38.259412,
+        lng: 140.882051,
+        note: '仙台駅直結。萩の月・笹かまぼこ・ずんだ茶寮などお土産購入に便利です。',
+        mapQuery: 'エスパル仙台'
+      }
+    ];
+
+    // 座席表データ（PDF資料より正確に反映：1〜8列目、全24名）
+    // type: 'user' (青色: 利用者), 'staff' (緑色: 引率職員)
+    const seatRowsData = [
+      {
+        row: 1,
+        A: { name: '渡辺 和佳子', type: 'staff' },
+        B: { name: 'もりお', type: 'user' },
+        C: { name: 'みつき', type: 'user' }
+      },
+      {
+        row: 2,
+        A: { name: 'まりな', type: 'user' },
+        B: { name: '森内 善伸', type: 'staff' },
+        C: { name: 'ひろき', type: 'user' }
+      },
+      {
+        row: 3,
+        A: { name: 'ひであき', type: 'user' },
+        B: { name: 'まりこ', type: 'user' },
+        C: { name: '高田 由香梨', type: 'staff' }
+      },
+      {
+        row: 4,
+        A: { name: 'こうた', type: 'user' },
+        B: { name: '杉本 令奈', type: 'staff' },
+        C: { name: 'おさむ', type: 'user' }
+      },
+      {
+        row: 5,
+        A: { name: 'まゆみ', type: 'user' },
+        B: { name: 'まなえ', type: 'user' },
+        C: { name: '森内 武師', type: 'staff' }
+      },
+      {
+        row: 6,
+        A: { name: 'ゆうと', type: 'user' },
+        B: { name: '小泉 美香利', type: 'staff' },
+        C: { name: 'いつみ', type: 'user' }
+      },
+      {
+        row: 7,
+        A: { name: 'りのみ', type: 'user' },
+        B: { name: 'くにこ', type: 'user' },
+        C: { name: '浅井 信夫', type: 'staff' }
+      },
+      {
+        row: 8,
+        A: { name: 'なおき', type: 'user' },
+        B: { name: 'かんぐ', type: 'user' },
+        C: { name: '力石 夏実', type: 'staff' }
+      }
+    ];
+
+    // 状態管理
+    let currentTrain = 'outbound'; // 'outbound' (5号車) | 'inbound' (8号車)
+    let userLocation = null; // { lat, lng }
+    let completedSteps = JSON.parse(localStorage.getItem('sendai_trip_completed') || '{}');
+
+    // ==========================================
+    // 2. 初期化処理
+    // ==========================================
+    window.addEventListener('DOMContentLoaded', () => {
+      updateClock();
+      setInterval(updateClock, 10000);
+
+      renderTimeline();
+      renderSpots();
+      renderSeatMap();
+      loadMemos();
+
+      // 保存された文字サイズ設定の復元
+      if (localStorage.getItem('sendai_trip_large_text') === 'true') {
+        document.documentElement.classList.add('text-large');
+        document.getElementById('fontSizeLabel').textContent = '文字：大';
+      }
+    });
+
+    // ==========================================
+    // 3. UI操作・ユーティリティ
+    // ==========================================
+
+    // タブ切り替え
+    function switchTab(tabName) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+      document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.classList.remove('text-teal-700', 'bg-teal-50', 'font-bold');
+        btn.classList.add('text-slate-500', 'font-medium');
+      });
+      const activeBtn = document.getElementById(`nav-${tabName}`);
+      activeBtn.classList.remove('text-slate-500', 'font-medium');
+      activeBtn.classList.add('text-teal-700', 'bg-teal-50', 'font-bold');
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // 文字サイズ切り替え
+    function toggleFontSize() {
+      const html = document.documentElement;
+      const isLarge = html.classList.toggle('text-large');
+      document.getElementById('fontSizeLabel').textContent = isLarge ? '文字：大' : '文字：標準';
+      localStorage.setItem('sendai_trip_large_text', isLarge);
+      showToast(isLarge ? '文字を大きくしました' : '文字サイズを標準に戻しました');
+    }
+
+    // トーストメッセージ表示（alertの代替）
+    let toastTimer = null;
+    function showToast(msg) {
+      const toast = document.getElementById('toastMessage');
+      document.getElementById('toastText').textContent = msg;
+      toast.classList.remove('hidden');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 2500);
+    }
+
+    // 現在時刻更新
+    function updateClock() {
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      const clockEl = document.getElementById('liveClock');
+      if (clockEl) clockEl.textContent = `${hh}:${mm}`;
+    }
+
+    // ==========================================
+    // 4. タイムライン機能
+    // ==========================================
+    function renderTimeline() {
+      const container = document.getElementById('timelineContainer');
+      let doneCount = 0;
+
+      container.innerHTML = scheduleData.map((item) => {
+        const isDone = !!completedSteps[item.id];
+        if (isDone) doneCount++;
+
+        return `
+          <div class="bg-white rounded-2xl p-4 soft-card border transition-all ${isDone ? 'border-emerald-300 bg-emerald-50/30 opacity-85' : 'border-slate-100'}">
+            <div class="flex items-start gap-3">
+              <!-- チェックボタン -->
+              <button onclick="toggleStep('${item.id}')" aria-label="完了チェック"
+                class="mt-0.5 w-8 h-8 rounded-xl border-2 flex items-center justify-center shrink-0 transition cursor-pointer ${isDone ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-slate-300 bg-white text-transparent hover:border-teal-500'}">
+                <i class="fa-solid fa-check text-sm"></i>
+              </button>
+
+              <div class="flex-1 min-w-0">
+                <div class="flex flex-wrap items-center gap-2 mb-1">
+                  <span class="font-maru font-bold text-sm text-teal-800 bg-teal-50 px-2.5 py-0.5 rounded-lg border border-teal-100">
+                    ${item.time}
+                  </span>
+                  <span class="text-xs font-bold px-2 py-0.5 rounded-full ${item.badgeColor}">
+                    ${item.badge}
+                  </span>
+                </div>
+
+                <h3 onclick="toggleStep('${item.id}')" class="font-maru font-bold text-base text-slate-800 cursor-pointer ${isDone ? 'line-through text-slate-500' : ''}">
+                  <i class="fa-solid ${item.icon} text-teal-600 mr-1.5"></i>${item.title}
+                </h3>
+
+                <p class="text-sm text-slate-600 mt-1.5 leading-relaxed">
+                  ${item.desc}
+                </p>
+
+                ${item.actionTab ? `
+                  <div class="mt-3">
+                    <button onclick="handleScheduleAction('${item.actionTab}', '${item.id}')"
+                      class="inline-flex items-center gap-1.5 text-xs font-bold text-teal-700 bg-teal-50 hover:bg-teal-100 active:bg-teal-200 px-3 py-2 rounded-xl border border-teal-200 transition cursor-pointer">
+                      <span>${item.actionLabel}</span>
+                      <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                  </div>
+                ` : ''}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // 進捗バー更新
+      const total = scheduleData.length;
+      const pct = Math.round((doneCount / total) * 100);
+      document.getElementById('progressText').textContent = `完了 ${doneCount} / ${total}`;
+      document.getElementById('progressBar').style.width = `${pct}%`;
+    }
+
+    function toggleStep(id) {
+      completedSteps[id] = !completedSteps[id];
+      localStorage.setItem('sendai_trip_completed', JSON.stringify(completedSteps));
+      renderTimeline();
+      if (completedSteps[id]) {
+        showToast('ステップを完了にしました！');
+      }
+    }
+
+    function handleScheduleAction(tabName, stepId) {
+      if (tabName === 'seats') {
+        switchTrain(stepId === 'step-7' ? 'inbound' : 'outbound');
+      }
+      switchTab(tabName);
+    }
+
+    // ==========================================
+    // 5. GPS位置情報・距離＆方角計算機能
+    // ==========================================
+    function fetchCurrentLocation() {
+      const statusText = document.getElementById('gpsStatusText');
+      const coordsText = document.getElementById('gpsCoordsText');
+      const btn = document.getElementById('getLocationBtn');
+
+      if (!navigator.geolocation) {
+        statusText.innerHTML = '<span class="text-amber-200 font-bold">お使いのブラウザは位置情報に対応していません。</span>下のGoogleマップボタンからルートをご確認ください。';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i><span>現在地を取得しています...</span>';
+      statusText.textContent = 'GPS衛星から位置情報を取得中です...';
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          userLocation = {
+            lat: pos.coords.latitude,
+            lng: pos.coords.longitude
+          };
+          const acc = Math.round(pos.coords.accuracy);
+          statusText.innerHTML = `<span class="text-emerald-200 font-bold"><i class="fa-solid fa-circle-check mr-1"></i>現在地を取得しました！</span>（精度：約${acc}m）`;
+          coordsText.textContent = `緯度: ${userLocation.lat.toFixed(5)} / 経度: ${userLocation.lng.toFixed(5)}`;
+          coordsText.classList.remove('hidden');
+
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-rotate-right"></i><span>現在地を再取得する</span>';
+
+          renderSpots();
+          showToast('現在地からの距離と方角を更新しました');
+        },
+        (err) => {
+          let errMsg = '位置情報を取得できませんでした。';
+          if (err.code === 1) errMsg = '位置情報の利用が許可されていません。端末の設定をご確認ください。';
+          else if (err.code === 2) errMsg = '電波状況などにより現在地を特定できませんでした。';
+          else if (err.code === 3) errMsg = '位置情報の取得がタイムアウトしました。';
+
+          statusText.innerHTML = `<span class="text-amber-200 font-bold"><i class="fa-solid fa-triangle-exclamation mr-1"></i>${errMsg}</span><br>※下の「Googleマップでルート案内」ボタンはそのままご利用いただけます。`;
+          btn.disabled = false;
+          btn.innerHTML = '<i class="fa-solid fa-satellite-dish"></i><span>もう一度試す</span>';
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 30000 }
+      );
+    }
+
+    // 2点間の直線距離（km）を計算（ヒュベニ・ハバーサイン公式）
+    function calcDistanceKm(lat1, lon1, lat2, lon2) {
+      const R = 6371;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    }
+
+    // 2点間の方角（16方位・8方位日本語）を計算
+    function calcBearingJapanese(lat1, lon1, lat2, lon2) {
+      const y = Math.sin((lon2 - lon1) * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180);
+      const x = Math.cos(lat1 * Math.PI / 180) * Math.sin(lat2 * Math.PI / 180) -
+                Math.sin(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.cos((lon2 - lon1) * Math.PI / 180);
+      let brng = Math.atan2(y, x) * 180 / Math.PI;
+      brng = (brng + 360) % 360;
+
+      const dirs = ['北', '北東', '東', '南東', '南', '南西', '西', '北西'];
+      const idx = Math.round(brng / 45) % 8;
+      return { deg: Math.round(brng), label: dirs[idx] };
+    }
+
+    function renderSpots() {
+      const container = document.getElementById('spotsContainer');
+
+      // 位置情報がある場合は距離順に並び替えるか、行程順のまま距離バッジを表示（行程順が見やすいため行程順維持＋最寄り強調）
+      let nearestId = null;
+      let minDist = Infinity;
+
+      const enriched = spotsData.map(spot => {
+        if (!userLocation) return { ...spot, distKm: null, bearing: null };
+        const distKm = calcDistanceKm(userLocation.lat, userLocation.lng, spot.lat, spot.lng);
+        const bearing = calcBearingJapanese(userLocation.lat, userLocation.lng, spot.lat, spot.lng);
+        if (distKm < minDist) {
+          minDist = distKm;
+          nearestId = spot.id;
+        }
+        return { ...spot, distKm, bearing };
+      });
+
+      container.innerHTML = enriched.map(spot => {
+        const isNearest = spot.id === nearestId && spot.distKm !== null;
+        let distDisplay = '';
+
+        if (spot.distKm !== null) {
+          const formattedDist = spot.distKm < 1
+            ? `約 ${Math.round(spot.distKm * 1000)} m`
+            : `約 ${spot.distKm.toFixed(1)} km`;
+
+          distDisplay = `
+            <div class="mt-2.5 flex flex-wrap items-center gap-2 bg-sky-50 border border-sky-200 rounded-xl px-3 py-2">
+              <span class="text-xs font-bold text-sky-900">
+                <i class="fa-solid fa-ruler-horizontal text-sky-600 mr-1"></i>直線距離：
+                <strong class="text-base font-maru text-sky-700">${formattedDist}</strong>
+              </span>
+              <span class="text-xs font-bold text-teal-800 bg-white px-2.5 py-0.5 rounded-lg border border-teal-200 flex items-center gap-1">
+                <i class="fa-solid fa-location-arrow text-teal-600" style="transform: rotate(${spot.bearing.deg - 45}deg);"></i>
+                ${spot.bearing.label}の方角
+              </span>
+              ${isNearest ? '<span class="text-[11px] font-bold bg-amber-400 text-slate-900 px-2 py-0.5 rounded-full">いま一番近い！</span>' : ''}
+            </div>
+          `;
+        }
+
+        // Googleマップ検索・ルート案内URL（現在地が取れていればorigin指定、なくてもGoogleマップ側で現在地からルート起動）
+        const mapsUrl = userLocation
+          ? `https://www.google.com/maps/dir/?api=1&origin=${userLocation.lat},${userLocation.lng}&destination=${spot.lat},${spot.lng}&travelmode=transit`
+          : `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(spot.mapQuery)}&travelmode=transit`;
+
+        return `
+          <div class="bg-white rounded-2xl p-4 soft-card border ${isNearest ? 'border-amber-400 ring-2 ring-amber-200' : 'border-slate-100'}">
+            <div class="flex items-start justify-between gap-2">
+              <div>
+                <span class="text-[11px] font-bold text-teal-700 bg-teal-50 px-2 py-0.5 rounded-md border border-teal-100">
+                  ${spot.category}
+                </span>
+                <h3 class="font-maru font-bold text-base text-slate-800 mt-1">
+                  ${spot.name}
+                </h3>
+              </div>
+            </div>
+
+            ${distDisplay}
+
+            <p class="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+              ${spot.note}
+            </p>
+
+            <div class="mt-3">
+              <a href="${mapsUrl}" target="_blank" rel="noopener noreferrer"
+                class="w-full inline-flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 active:bg-slate-900 text-white font-maru font-bold text-sm py-3 px-4 rounded-xl transition">
+                <i class="fa-solid fa-map-location-dot text-emerald-400"></i>
+                <span>Googleマップでルート案内</span>
+                <i class="fa-solid fa-arrow-up-right-from-square text-xs opacity-75"></i>
+              </a>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ==========================================
+    // 6. 新幹線座席表機能（5号車・8号車対応）
+    // ==========================================
+    function switchTrain(trainType) {
+      currentTrain = trainType;
+      const btnOut = document.getElementById('btnTrainOut');
+      const btnIn = document.getElementById('btnTrainIn');
+
+      if (trainType === 'outbound') {
+        btnOut.className = 'py-2.5 px-3 rounded-lg font-maru font-bold text-sm transition bg-teal-600 text-white shadow-sm cursor-pointer';
+        btnIn.className = 'py-2.5 px-3 rounded-lg font-maru font-bold text-sm transition text-slate-600 hover:bg-white/60 cursor-pointer';
+      } else {
+        btnIn.className = 'py-2.5 px-3 rounded-lg font-maru font-bold text-sm transition bg-teal-600 text-white shadow-sm cursor-pointer';
+        btnOut.className = 'py-2.5 px-3 rounded-lg font-maru font-bold text-sm transition text-slate-600 hover:bg-white/60 cursor-pointer';
+      }
+      renderSeatMap();
+    }
+
+    function clearSeatSearch() {
+      document.getElementById('seatSearchInput').value = '';
+      renderSeatMap();
+    }
+
+    function renderSeatMap() {
+      const container = document.getElementById('seatMapContainer');
+      const query = document.getElementById('seatSearchInput').value.trim().toLowerCase();
+      const clearBtn = document.getElementById('clearSearchBtn');
+      clearBtn.classList.toggle('hidden', query === '');
+
+      const isOutbound = currentTrain === 'outbound';
+      // PDF図面通り：
+      // ゆき（5号車）：上が進行方向前（4号車寄り）、1列目→8列目の順。1列目の後ろ側(7号車寄り)に大型荷物置場、後ろ側(6号車デッキ寄り)にトイレ・多目的室。
+      // かえり（8号車）：進行方向が逆転し、8列目が上側、1列目が下側（9号車グリーン車寄りが前側、9〜15列目は空席）。
+      const displayRows = isOutbound ? [...seatRowsData] : [...seatRowsData].reverse();
+
+      const headerBanner = isOutbound
+        ? `<div class="bg-sky-50 border border-sky-200 rounded-xl p-2.5 text-center mb-3">
+             <div class="font-maru font-bold text-sky-900 text-sm">
+               <i class="fa-solid fa-arrow-up text-sky-600 mr-1"></i>すすむ方向（まえ・4号車寄り）
+             </div>
+             <div class="text-[11px] text-sky-700 mt-0.5">※9〜15列目は空席です</div>
+           </div>`
+        : `<div class="bg-emerald-50 border border-emerald-200 rounded-xl p-2.5 text-center mb-3">
+             <div class="font-maru font-bold text-emerald-900 text-sm">
+               <i class="fa-solid fa-arrow-up text-emerald-600 mr-1"></i>すすむ方向（まえ・9号車グリーン車寄り）
+             </div>
+             <div class="text-[11px] text-emerald-700 mt-0.5">※9〜15列目は空席（進行方向の前側）です</div>
+           </div>`;
+
+      const footerFacility = `
+        <div class="mt-3 space-y-2 text-xs">
+          <div class="bg-slate-100 border border-slate-200 rounded-xl p-2.5 flex items-center justify-between text-slate-700">
+            <span class="font-bold"><i class="fa-solid fa-suitcase-rolling text-slate-500 mr-1.5"></i>大型荷物置場</span>
+            <span>1列目のうしろ側（7号車寄り）</span>
+          </div>
+          <div class="bg-slate-100 border border-slate-200 rounded-xl p-2.5 flex items-center justify-between text-slate-700">
+            <span class="font-bold"><i class="fa-solid fa-restroom text-teal-600 mr-1.5"></i>トイレ・多目的室</span>
+            <span>うしろ側（6号車デッキ寄り）</span>
+          </div>
+        </div>
+      `;
+
+      // 座席セルのHTML生成ヘルパー
+      const renderSeatCell = (seatObj, seatLetter) => {
+        if (!seatObj) return `<div class="p-2 rounded-xl bg-slate-50 border border-dashed border-slate-200 text-center text-slate-300 text-xs">空席</div>`;
+
+        const isMatch = query && seatObj.name.toLowerCase().includes(query);
+        const isDimmed = query && !isMatch;
+
+        const baseStyle = seatObj.type === 'user'
+          ? 'bg-sky-50 border-sky-400 text-sky-950'
+          : 'bg-emerald-50 border-emerald-500 text-emerald-950';
+
+        const highlightStyle = isMatch
+          ? 'ring-4 ring-amber-400 bg-amber-100 border-amber-500 scale-[1.03] z-10 shadow-md'
+          : (isDimmed ? 'opacity-35' : '');
+
+        const roleBadge = seatObj.type === 'staff'
+          ? '<span class="inline-block text-[10px] font-bold bg-emerald-600 text-white px-1.5 rounded">職員</span>'
+          : '';
+
+        return `
+          <div class="rounded-xl border-2 p-2 flex flex-col justify-between min-h-[64px] transition-all ${baseStyle} ${highlightStyle}">
+            <div class="flex items-center justify-between text-[10px] font-bold opacity-75">
+              <span>${seatLetter}席</span>
+              ${roleBadge}
+            </div>
+            <div class="font-maru font-bold text-xs sm:text-sm leading-tight mt-1 break-words">
+              ${seatObj.name}
+            </div>
+          </div>
+        `;
+      };
+
+      const rowsHtml = displayRows.map(r => `
+        <div class="grid grid-cols-[34px_1fr_1fr_1fr_24px] gap-1.5 items-stretch mb-2">
+          <!-- 列番号 -->
+          <div class="flex flex-col items-center justify-center bg-slate-800 text-white rounded-xl font-maru font-bold text-sm">
+            <span>${r.row}</span>
+            <span class="text-[9px] font-normal opacity-80">列</span>
+          </div>
+          <!-- A席(窓) -->
+          ${renderSeatCell(r.A, 'A')}
+          <!-- B席(中) -->
+          ${renderSeatCell(r.B, 'B')}
+          <!-- C席(通) -->
+          ${renderSeatCell(r.C, 'C')}
+          <!-- 通路 -->
+          <div class="flex items-center justify-center bg-slate-100 rounded-lg text-[10px] text-slate-400 font-bold [writing-mode:vertical-rl]">
+            通路
+          </div>
+        </div>
+      `).join('');
+
+      // 12列目 車いすスペース案内
+      const wheelchairRow = `
+        <div class="mt-2 pt-2 border-t-2 border-dashed border-slate-200">
+          <div class="grid grid-cols-[34px_1fr] gap-1.5 items-center">
+            <div class="h-full flex flex-col items-center justify-center bg-slate-600 text-white rounded-xl font-maru font-bold text-xs py-2">
+              <span>12</span>
+              <span class="text-[9px] font-normal">列</span>
+            </div>
+            <div class="bg-indigo-50 border border-indigo-200 rounded-xl p-2.5 flex items-center justify-between text-xs text-indigo-900">
+              <span class="font-bold"><i class="fa-solid fa-wheelchair text-indigo-600 mr-1.5"></i>車いす・移乗対応スペース</span>
+              <span class="text-[11px] bg-white px-2 py-0.5 rounded border border-indigo-200">A・E席側</span>
+            </div>
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = `
+        ${headerBanner}
+        <!-- 列見出し -->
+        <div class="grid grid-cols-[34px_1fr_1fr_1fr_24px] gap-1.5 text-center text-[11px] font-bold text-slate-500 mb-1.5">
+          <div>列</div>
+          <div>A (窓側)</div>
+          <div>B (中央)</div>
+          <div>C (通路)</div>
+          <div></div>
+        </div>
+        ${rowsHtml}
+        ${wheelchairRow}
+        ${footerFacility}
+      `;
+    }
+
+    // ==========================================
+    // 7. メモ機能（localStorage保存）
+    // ==========================================
+    function loadMemos() {
+      const m1 = localStorage.getItem('sendai_trip_memo_meeting') || '';
+      const m2 = localStorage.getItem('sendai_trip_memo_emergency') || '';
+      document.getElementById('memoMeeting').value = m1;
+      document.getElementById('memoEmergency').value = m2;
+    }
+
+    function saveMemos(showNotification = false) {
+      const m1 = document.getElementById('memoMeeting').value;
+      const m2 = document.getElementById('memoEmergency').value;
+      localStorage.setItem('sendai_trip_memo_meeting', m1);
+      localStorage.setItem('sendai_trip_memo_emergency', m2);
+      if (showNotification) {
+        showToast('メモを保存しました');
+      }
+    }
+  </script>
+</body>
+</html>
