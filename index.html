@@ -353,7 +353,7 @@
         <div>
           <label class="block text-xs font-bold text-slate-600 mb-1">集合時間・場所のメモ</label>
           <textarea id="memoMeeting" rows="2" oninput="saveMemos()"
-            placeholder="例：12:40 水族館1階入り口の時計前に集合 / 15:45 仙台駅ステンドグラス前"
+            placeholder="例：12:40 水族館1階入り口の時計前に集合 / 15:55 仙台駅2階ステンドグラス前"
             class="w-full p-3 bg-amber-50/60 border border-amber-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-teal-500"></textarea>
         </div>
 
@@ -474,9 +474,23 @@
         badge: 'お土産',
         badgeColor: 'bg-pink-100 text-pink-800',
         icon: 'fa-gift',
-        desc: '萩の月、ずんだ餅、笹かまぼこ、牛たんなど仙台土産を購入！15:50頃には新幹線改札前に集合しましょう。',
+        desc: '萩の月、ずんだ餅、笹かまぼこ、牛たんなど仙台土産を購入！買い物が終わったら、<strong>15:55までに2階「ステンドグラス前」</strong>に集まりましょう。',
         actionTab: 'navi',
         actionLabel: 'S-PAL仙台の位置を確認'
+      },
+      {
+        id: 'step-meet',
+        time: '15:55 集合',
+        title: '仙台駅2階「ステンドグラス前」に集合',
+        badge: '集合',
+        badgeColor: 'bg-rose-100 text-rose-800',
+        icon: 'fa-people-group',
+        desc: '<strong>15:55</strong>に、仙台駅2階・在来線中央改札の前にある大きな<strong>ステンドグラスの前</strong>に集合して点呼をとります。<br>※新幹線の改札（3階）ではありません。集合後、みんなでエスカレーターで3階の<strong>新幹線中央改札</strong>へ向かいます（16:05頃に改札を通ります）。',
+        image: 'img/meeting-stainedglass.webp',
+        imageAlt: '仙台駅2階のステンドグラス前（上の階から見たところ）',
+        imageMarker: { x: 47, y: 50, label: 'ここに集合' },
+        actionTab: 'navi',
+        actionLabel: '集合場所の位置を確認'
       },
       {
         id: 'step-7',
@@ -501,6 +515,15 @@
         lng: 140.882437,
         note: '新幹線ホームは3階、JR仙石線（中野栄方面）は地下ホーム（1・2番線）です。',
         mapQuery: '仙台駅'
+      },
+      {
+        id: 'meeting-stainedglass',
+        name: '仙台駅2階 ステンドグラス前（帰りの集合場所）',
+        category: '15:55 集合場所',
+        lat: 38.260132,
+        lng: 140.882437,
+        note: '仙台駅2階の中央コンコース、在来線中央改札の前にある大きなステンドグラスの前です。S-PAL仙台から2階でそのまま来られます。集合後、エスカレーターで3階の新幹線中央改札へ移動します。',
+        mapQuery: '仙台駅 ステンドグラス'
       },
       {
         id: 'nakanosakae-station',
@@ -706,6 +729,18 @@
                 <p class="text-sm text-slate-600 mt-1.5 leading-relaxed">
                   ${item.desc}
                 </p>
+
+                ${item.image ? `
+                  <a href="${item.image}" target="_blank" rel="noopener" class="block mt-3 relative rounded-xl overflow-hidden border-2 border-rose-300">
+                    <img src="${item.image}" alt="${item.imageAlt}" loading="lazy" class="w-full h-auto block">
+                    ${item.imageMarker ? `
+                      <span class="absolute flex flex-col items-center -translate-x-1/2 -translate-y-full pointer-events-none" style="left:${item.imageMarker.x}%;top:${item.imageMarker.y}%;">
+                        <span class="bg-rose-600 text-white font-maru font-bold text-sm px-3 py-1 rounded-full shadow-lg whitespace-nowrap">${item.imageMarker.label}</span>
+                        <i class="fa-solid fa-caret-down text-rose-600 text-2xl -mt-2 drop-shadow"></i>
+                      </span>` : ''}
+                    <span class="absolute bottom-0 inset-x-0 bg-black/55 text-white text-[11px] px-2 py-1">${item.imageAlt}（タップで拡大）</span>
+                  </a>
+                ` : ''}
 
                 ${item.actionTab ? `
                   <div class="mt-3">
